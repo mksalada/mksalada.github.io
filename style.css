@@ -1,0 +1,50 @@
+.hover-text-primary:hover, .hover-text-primary:active {
+  color: #714cdf !important; }
+.hover-text-secondary:hover, .hover-text-secondary:active {
+  color: #16a4de !important; }
+.hover-text-success:hover, .hover-text-success:active {
+  color: #17b06b !important; }
+.hover-text-info:hover, .hover-text-info:active {
+  color: #2983fe !important; }
+.hover-text-warning:hover, .hover-text-warning:active {
+  color: #f97515 !important; }
+.hover-text-danger:hover, .hover-text-danger:active {
+  color: #ff3c5c !important; }
+.hover-text-light:hover, .hover-text-light:active {
+  color: #dbebfb !important; }
+.hover-text-dark:hover, .hover-text-dark:active {
+  color: #32334a !important; }
+
+.text-hidden {
+  /* font: 0/0 a; */
+  color: transparent !important;
+  text-shadow: none !important;
+  background-color: transparent !important;
+  border: 0 !important; }
+
+.text-deco-none {
+  text-decoration: none !important; }
+
+.cursor-pointer {
+  cursor: pointer; }
+.cursor-default {
+  cursor: default; }
+.cursor-text {
+  cursor: text; }
+.cursor-progress {
+  cursor: progress; }
+.cursor-help {
+  cursor: help; }
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
+/* On screens that are 992px wide or less */
+/* @media screen and (max-width: 992px) {} */
+
+/* On screens that are 600px wide or less */
+@media screen and (max-width: 600px) {
+  #hero, #about, #todo, #system {
+  margin-bottom: 25px !important;
+  }
+}

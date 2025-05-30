@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Server</title>
+
+  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link rel="stylesheet" href="./neon-glow.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link rel='stylesheet' href='//cdn.jsdelivr.net/font-hack/2.020/css/hack.min.css'>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="navbar-dark text-white">
+    <div class="container">
+      <nav class="navbar px-0 navbar-expand-lg navbar-dark">
+        <div class="navbar-brand text-darkblue text-spacey text-mono cursor-progress">
+          <span class="text-success">tina</span>@dev:~$&nbsp;ls<span class="vim-caret cursor-text">&nbsp;</span>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav text-mono">
+            <a href="./index.html" title="About" class="p-3 text-darkgrey text-decoration-none hover-text-secondary">
+              ./<span class="text-secondary">about</span>.txt
+            </a>
+            <a href="https://mks.hashnode.dev" title="Writings" class="pl-md-0 p-3 text-decoration-none text-darkgrey hover-text-primary">
+              ./<span class="text-primary">writings</span>.exe
+            </a>
+            <span href="#!" title="Projects" class="p-3 text-decoration-none text-darkgrey hover-text-secondary">
+              ./<span class="text-darkgrey">projects</span>.py
+            </span>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <div class="jumbotron bg-transparent mb-0 radius-0 cursor-default">
+    <div class="container">
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="card text-mono bg-transparent my-sm-3">
+              <div class="card-header text-primary">
+                Status
+                <i class="fa fa-circle float-right pl-1 text-danger"></i>
+                <i class="fa fa-circle float-right pl-1 text-success"></i>
+                <i class="fa fa-circle float-right pl-1 text-secondary"></i>
+              </div>
+              <div class="card-body">
+                <div class="card-text">
+                  <ul class="list-group text-darkgrey">
+                    <li class="list-group-item bg-transparent text-darkblue border-0">
+                      May 30
+                    </li>
+                      <li class="list-group-item bg-transparent border-0 py-0">
+                        <span class="bg-success text-white">SUCCESS</span>&nbsp;Server is running
+                      </li>
+                      <li class="list-group-item bg-transparent border-0 py-0">
+                        <span class="bg-success text-white">SUCCESS</span>&nbsp;Theme downloaded
+                      </li>
+                      <li class="list-group-item bg-transparent border-0 py-0">
+                        <span class="bg-success text-white">SUCCESS</span>&nbsp;Saved changes
+                      </li>
+                      <li class="list-group-item bg-transparent border-0 py-0">
+                        <span class="bg-success text-white">SUCCESS</span>&nbsp;Website deployed
+                        <span class="bg-success text-white">SUCCESS</span>&nbsp;Deployment locked
+                      </li>
+                    <li class="list-group-item bg-transparent text-info border-0">
+                      Listening to server...<span class="vim-caret cursor-text">&nbsp;</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="container py-5 cursor-default">
+    <p class="text-mono text-darkblue">
+      <small>
+        <span id="currentYear"></span><br>
+        <span id="currentVersion"></span><br>
+        <span id="currentTheme"></span><br>
+        <span id="moreFooterText"></span>
+      </small>
+    </p>
+  </div>
+
+  <script src="./functions.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
