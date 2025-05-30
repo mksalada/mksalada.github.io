@@ -6,7 +6,10 @@ description: "Learn about some of my projects."
 slug: ""
 tags: [""]
 cascade:
-    showReadingTime: false
+  showDate: true
+  showAuthor: true
+  invertPagination: true
+  showReadingTime: false
 ---
 
-This section contains all my current projects.
+This section contains all my projects.
