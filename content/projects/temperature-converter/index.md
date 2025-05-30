@@ -26,3 +26,5 @@ I was just looking at my old-school files and then I found this folder of mine w
 Then, my mind came up with the idea of making those C projects into a web application using vanilla JavaScript. At that time, I only have a little knowledge of JavaScript. Using that web app, you can convert Celsius to Fahrenheit, Fahrenheit to Celsius, and Fahrenheit to Kelvin.
 
 Links: [Repository](https://github.com/mksalada/temperature-converter-web-application/) / [Demo](https://mksalada.github.io/temperature-converter-web-application/)
+
+{{< github repo="mksalada/temperature-converter-web-application" showThumbnail=true >}}
