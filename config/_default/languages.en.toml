@@ -16,13 +16,13 @@ title = "Tina Salada"
 
 [params.author]
   name = "Tina Salada"
-  email = "mailto:tinacodekit@goigle.com"
+  email = "mailto:tinacodekit@gmail.com"
   image = "avatars/tina-salada.png"
   # imageQuality = 96
   headline = ""
   bio = "aspiring web developer, IT student, Baybayin advocate, follower of Christ"
   links = [
-    { email = "mailto:tinacodekit@google.com" },
+    { email = "mailto:tinacodekit@gmail.com" },
 #     { link = "https://link-to-some-website.com/" },
 #     { amazon = "https://www.amazon.com/hz/wishlist/ls/wishlist-id" },
 #     { apple = "https://www.apple.com" },
