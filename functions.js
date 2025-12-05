@@ -25,11 +25,25 @@ document.addEventListener("mousedown", e => {
   }
 });
 
+//////////////////////////////////////////////////
+
+// Display Text Terminal
+const terminal1 = "tina",
+      terminal2 = "dev",
+      showTerminal1 = `${terminal1}`,
+      showTerminal2 = `@${terminal2}:~$&nbsp;ls`;
+
+if (terminal1 != null) {
+  document.getElementById("terminal1").innerHTML = showTerminal1.toString();
+  document.getElementById("terminal2").innerHTML = showTerminal2.toString();
+} else {
+  document.getElementById("terminal1").innerHTML = showTerminal1.toString();
+}
 
 //////////////////////////////////////////////////
 
 // Display Current Version
-const verStart = 0,
+const verStart = 2,
       verBugs = 0,
       verChanges = 7,
       verName = null;
@@ -53,14 +67,14 @@ if (verName != null) {
 //////////////////////////////////////////////////
 
 // Display Current Year
-const u = new Date("2025"),
+const u = new Date("2023"),
       w = new Date(),
       x = u.getFullYear(),
       y = w.getFullYear(),
       copyR = "Copyright &COPY;",
-      authorName = "TINA",
-      showYear1 = `${copyR} ${x} ${authorName}`,
-      showYear2 = `${copyR} ${x}-${y} ${authorName}`;
+      authorName = "TINA SALADA",
+      showYear1 = `${authorName}<br>${copyR} ${x}`,
+      showYear2 = `${authorName}<br>${copyR} ${x}-${y}`;
 
 if (x != y && x < y) {
   document.getElementById("currentYear").innerHTML = showYear2.toString();
@@ -85,7 +99,7 @@ if (siteTheme != null) {
 //////////////////////////////////////////////////
 
 // Display more details on footer
-const footerText = "Host: GitHub"
+const footerText = "Host: GitHub Pages"
 
 document.getElementById("moreFooterText").innerHTML = footerText.toString();
 
