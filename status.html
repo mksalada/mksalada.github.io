@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Server</title>
+  <title>Status - Tina</title>
 
   <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
@@ -17,22 +17,25 @@
     <div class="container">
       <nav class="navbar px-0 navbar-expand-lg navbar-dark">
         <div class="navbar-brand text-darkblue text-spacey text-mono cursor-progress">
-          <span class="text-success">tina</span>@dev:~$&nbsp;ls<span class="vim-caret cursor-text">&nbsp;</span>
+          <span id="terminal1" class="text-success"></span><span id="terminal2"></span><span class="vim-caret cursor-text">&nbsp;</span>
         </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav text-mono">
-            <a href="./index.html" title="About" class="p-3 text-darkgrey text-decoration-none hover-text-secondary">
+            <a href="./" title="Home" class="pl-md-0 p-3 text-darkgrey text-decoration-none hover-text-primary">
+              ./<span class="text-secondary">index</span>.html
+            </a>
+            <a href="https://tina.is-a.dev/about" title="About" class="p-3 text-darkgrey text-decoration-none hover-text-primary">
               ./<span class="text-secondary">about</span>.txt
             </a>
-            <a href="https://mks.hashnode.dev" title="Writings" class="pl-md-0 p-3 text-decoration-none text-darkgrey hover-text-primary">
-              ./<span class="text-primary">writings</span>.exe
+            <a href="https://tina.is.dev/posts" title="Writings" class="p-3 text-decoration-none text-darkgrey hover-text-secondary">
+              ./<span class="text-secondary">writings</span>.md
             </a>
-            <span href="#!" title="Projects" class="p-3 text-decoration-none text-darkgrey hover-text-secondary">
-              ./<span class="text-darkgrey">projects</span>.py
-            </span>
+            <a href="https://tina.is-a.dev/projects" title="Projects" class="p-3 text-decoration-none text-darkgrey hover-text-secondary">
+              ./<span class="text-secondary">projects</span>.exe
+            </a>
           </div>
         </div>
       </nav>
@@ -54,23 +57,26 @@
                 <div class="card-text">
                   <ul class="list-group text-darkgrey">
                     <li class="list-group-item bg-transparent text-darkblue border-0">
-                      May 30
+                      <i class="fa fa-check-circle text-success"></i> All services are online
                     </li>
                       <li class="list-group-item bg-transparent border-0 py-0">
-                        <span class="bg-success text-white">SUCCESS</span>&nbsp;Server is running
+                        <span class="bg-success text-white">SUCCESS</span>&nbsp;mksalada.github.io <i class="fa fa-folder text-primary"></i>
                       </li>
                       <li class="list-group-item bg-transparent border-0 py-0">
-                        <span class="bg-success text-white">SUCCESS</span>&nbsp;Theme downloaded
+                        <span class="bg-success text-white">SUCCESS</span>&nbsp;tina.is-a.dev<i class="fa fa-code text-primary"></i>
                       </li>
                       <li class="list-group-item bg-transparent border-0 py-0">
-                        <span class="bg-success text-white">SUCCESS</span>&nbsp;Saved changes
+                        <span class="bg-success text-white">SUCCESS</span>&nbsp;salada.pages.dev <i class="fa fa-link text-primary"></i>
+                      </li>
+                    <!--<li class="list-group-item bg-transparent border-0 py-0">
+                        <span class="bg-info text-white">SUCCESS</span>&nbsp;Operational 
                       </li>
                       <li class="list-group-item bg-transparent border-0 py-0">
-                        <span class="bg-success text-white">SUCCESS</span>&nbsp;Website deployed
-                        <span class="bg-success text-white">SUCCESS</span>&nbsp;Deployment locked
-                      </li>
+                        <span class="bg-warning text-white">SUCCESS</span>&nbsp;Not monitored 
+                      </li>-->
                     <li class="list-group-item bg-transparent text-info border-0">
-                      Listening to server...<span class="vim-caret cursor-text">&nbsp;</span>
+                      Listening to server...
+                      <!--<span class="vim-caret cursor-text">&nbsp;</span>--> 
                     </li>
                   </ul>
                 </div>
