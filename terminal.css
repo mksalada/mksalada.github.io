@@ -13,8 +13,10 @@
   min-width: 10px;
 }
 
-.cmd::after {
-  content: "█";
+.cursor {
+  display: inline-block;
+  width: 8px;
+  background: #00ffcc;
   animation: blink 1s infinite;
 }
 
