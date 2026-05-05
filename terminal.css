@@ -1,0 +1,12 @@
+#terminal {
+  font-family: monospace;
+  color: #00ffcc;
+}
+
+#terminal-input {
+  font-family: monospace;
+}
+
+#terminal span {
+  font-weight: bold;
+}
