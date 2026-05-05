@@ -1,10 +1,8 @@
 const terminal = document.getElementById("terminal");
-const input = document.getElementById("terminal-input");
 
 // ===== STATE =====
 let history = [];
 let historyIndex = -1;
-
 let currentPath = ["home"];
 
 // ===== FILE SYSTEM =====
@@ -15,49 +13,26 @@ const fs = {
       projects: {
         type: "dir",
         children: {
-          "portfolio.txt": {
-            type: "file",
-            content: "My personal website built with Bootstrap + Neon Glow."
-          },
-          "terminal.txt": {
-            type: "file",
-            content: "Interactive terminal UI built with vanilla JavaScript."
-          }
-        }
-      },
-      socials: {
-        type: "dir",
-        children: {
-          "github.txt": {
-            type: "file",
-            content: "https://github.com/yourname"
-          },
-          "twitter.txt": {
-            type: "file",
-            content: "https://twitter.com/yourname"
-          }
+          "portfolio.txt": { type: "file", content: "My portfolio site." },
+          "terminal.txt": { type: "file", content: "A fake OS terminal UI." }
         }
       },
       "about.txt": {
         type: "file",
-        content: "Hi, I'm a developer who likes building cool UI."
+        content: "Hi, I'm a dev who builds cool stuff."
       }
     }
   }
 };
 
 // ===== HELPERS =====
-function getDir(pathArray) {
+function getDir(path) {
   let dir = fs;
-  for (let p of pathArray) {
-    dir = dir[p].children;
-  }
+  for (let p of path) dir = dir[p].children;
   return dir;
 }
 
 function resolvePath(path) {
-  if (!path) return currentPath;
-
   let parts = path.split("/").filter(Boolean);
   let newPath = path.startsWith("/") ? [] : [...currentPath];
 
@@ -75,175 +50,152 @@ function getPrompt() {
 
 // ===== COMMANDS =====
 const commands = {
+  help: () => `
+help  ls  cd  pwd  cat  clear  echo
+  `,
 
-  help() {
-    return `
-help       list commands
-ls         list files
-cd         change directory
-pwd        show path
-cat        read file
-clear      clear terminal
-echo       print text
-open       open link
-    `;
-  },
-
-  ls() {
+  ls: () => {
     const dir = getDir(currentPath);
-    return Object.keys(dir)
-      .map(name => {
-        const item = dir[name];
-        return item.type === "dir"
-          ? `[${name}]`
-          : name;
-      })
-      .join("    ");
+    return Object.keys(dir).map(name =>
+      dir[name].type === "dir" ? `[${name}]` : name
+    ).join("   ");
   },
 
-  cd(args) {
-    const path = args[0];
-    if (!path) return "";
-
-    const newPath = resolvePath(path);
+  cd: (args) => {
+    const newPath = resolvePath(args[0] || "");
 
     try {
       let dir = fs;
       for (let p of newPath) {
         dir = dir[p];
-        if (dir.type !== "dir") throw "Not a directory";
+        if (dir.type !== "dir") throw "";
         dir = dir.children;
       }
       currentPath = newPath;
     } catch {
-      return `cd: no such directory: ${path}`;
+      return "cd: no such directory";
     }
-
     return "";
   },
 
-  pwd() {
-    return "/" + currentPath.join("/");
-  },
+  pwd: () => "/" + currentPath.join("/"),
 
-  cat(args) {
-    const file = args[0];
-    if (!file) return "cat: missing file";
-
+  cat: (args) => {
     const dir = getDir(currentPath);
-
-    if (!dir[file]) return `cat: file not found: ${file}`;
-    if (dir[file].type !== "file") return "cat: not a file";
-
-    return dir[file].content;
+    const file = dir[args[0]];
+    if (!file) return "file not found";
+    if (file.type !== "file") return "not a file";
+    return file.content;
   },
 
-  clear() {
+  clear: () => {
     terminal.innerHTML = "";
     return "";
   },
 
-  echo(args) {
-    return args.join(" ");
-  },
+  echo: (args) => args.join(" ")
+};
 
-  open(args) {
-    const links = {
-      github: "https://github.com/yourname",
-      twitter: "https://twitter.com/yourname"
-    };
+// ===== CREATE INPUT LINE =====
+function createInputLine() {
+  const line = document.createElement("div");
 
-    const key = args[0];
-    if (links[key]) {
-      window.open(links[key], "_blank");
-      return `Opening ${key}...`;
+  const prompt = document.createElement("span");
+  prompt.className = "prompt";
+  prompt.textContent = getPrompt() + " ";
+
+  const input = document.createElement("span");
+  input.className = "cmd";
+  input.contentEditable = true;
+  input.spellcheck = false;
+
+  line.appendChild(prompt);
+  line.appendChild(input);
+  terminal.appendChild(line);
+
+  focusInput(input);
+  handleInput(input, line);
+}
+
+// ===== FOCUS CARET =====
+function focusInput(el) {
+  el.focus();
+
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  range.collapse(false);
+
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+}
+
+// ===== HANDLE INPUT =====
+function handleInput(input, line) {
+  input.addEventListener("keydown", function(e) {
+
+    // ENTER → execute
+    if (e.key === "Enter") {
+      e.preventDefault();
+
+      const text = input.innerText.trim();
+      history.push(text);
+      historyIndex = history.length;
+
+      runCommand(text);
+
+      input.contentEditable = false;
+      createInputLine();
+      scroll();
     }
-    return "Unknown link";
-  }
-};
 
-// ===== ALIASES =====
-const aliases = {
-  cls: "clear",
-  dir: "ls"
-};
+    // BACKSPACE (prevent deleting prompt)
+    if (e.key === "Backspace" && input.innerText.length === 0) {
+      e.preventDefault();
+    }
 
-// ===== EXECUTION =====
-function runCommand(inputText) {
-  let [cmd, ...args] = inputText.split(" ");
+    // HISTORY ↑ ↓
+    if (e.key === "ArrowUp") {
+      if (historyIndex > 0) {
+        historyIndex--;
+        input.innerText = history[historyIndex];
+        focusInput(input);
+      }
+      e.preventDefault();
+    }
 
-  if (aliases[cmd]) cmd = aliases[cmd];
+    if (e.key === "ArrowDown") {
+      if (historyIndex < history.length - 1) {
+        historyIndex++;
+        input.innerText = history[historyIndex];
+      } else {
+        input.innerText = "";
+      }
+      focusInput(input);
+      e.preventDefault();
+    }
+  });
+}
+
+// ===== RUN COMMAND =====
+function runCommand(text) {
+  if (!text) return;
+
+  const [cmd, ...args] = text.split(" ");
 
   if (commands[cmd]) {
     const output = commands[cmd](args);
     if (output) print(output);
   } else {
-    print(`Command not found: ${cmd}`);
+    print("command not found");
   }
 }
 
-// ===== INPUT =====
-input.addEventListener("keydown", function(e) {
-
-  if (e.key === "Enter") {
-    const raw = input.value.trim();
-    if (!raw) return;
-
-    print(`${getPrompt()} ${raw}`);
-
-    history.push(raw);
-    historyIndex = history.length;
-
-    runCommand(raw);
-
-    input.value = "";
-    scroll();
-  }
-
-  else if (e.key === "ArrowUp") {
-    if (historyIndex > 0) {
-      historyIndex--;
-      input.value = history[historyIndex];
-    }
-    e.preventDefault();
-  }
-
-  else if (e.key === "ArrowDown") {
-    if (historyIndex < history.length - 1) {
-      historyIndex++;
-      input.value = history[historyIndex];
-    } else {
-      input.value = "";
-    }
-    e.preventDefault();
-  }
-
-  else if (e.key === "Tab") {
-    e.preventDefault();
-    autocomplete();
-  }
-});
-
-// ===== AUTOCOMPLETE =====
-function autocomplete() {
-  const value = input.value.trim();
-  const cmds = Object.keys(commands);
-
-  const match = cmds.filter(c => c.startsWith(value));
-
-  if (match.length === 1) {
-    input.value = match[0];
-  } else if (match.length > 1) {
-    print(match.join("   "));
-  }
-}
-
-// ===== PRINT =====
+// ===== PRINT OUTPUT =====
 function print(text) {
   text.split("\n").forEach(line => {
     const div = document.createElement("div");
 
-    // Color directories
     if (line.startsWith("[")) {
       div.innerHTML = `<span style="color:#00aaff">${line}</span>`;
     } else {
@@ -259,6 +211,7 @@ function scroll() {
   terminal.scrollTop = terminal.scrollHeight;
 }
 
-// Boot message
-print("Welcome to Tina's Terminal");
-print('Type "help" to begin');
+// Boot
+print("Welcome to Portfolio OS");
+print('Type "help" to start');
+createInputLine();
