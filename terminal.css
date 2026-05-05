@@ -3,10 +3,21 @@
   color: #00ffcc;
 }
 
-#terminal-input {
-  font-family: monospace;
+.prompt {
+  color: #00aaff;
 }
 
-#terminal span {
-  font-weight: bold;
+.cmd {
+  outline: none;
+  display: inline-block;
+  min-width: 10px;
+}
+
+.cmd::after {
+  content: "█";
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
 }
