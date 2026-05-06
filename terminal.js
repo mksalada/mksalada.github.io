@@ -1,12 +1,33 @@
-const terminal = document.getElementById("terminal");
+// === FILESYSTEM ===
+const fs = {
+  home: {
+    "about.txt": "Hi, I'm Tina. Welcome to my portfolio!",
+    "skills.txt": "HTML, CSS, JavaScript",
+    projects: {
+      "terminal.js": "This is my terminal project",
+      "website.html": "<html>...</html>"
+    }
+  }
+};
 
+let currentPath = ["home"];
+
+function getCurrentDir() {
+  return currentPath.reduce((dir, key) => dir[key], fs);
+}
+
+// === TERMINAL ===
+const terminal = document.getElementById("terminal");
 const hiddenInput = document.getElementById("hiddenInput");
 
-terminal.addEventListener("click", () => {
-  hiddenInput.focus();
+// Better mobile focus support
+["click", "touchstart"].forEach(evt => {
+  terminal.addEventListener(evt, () => {
+    hiddenInput.focus();
+  });
 });
 
-// ===== STATE =====
+// === STATE ===
 let history = [];
 let historyIndex = -1;
 
@@ -15,12 +36,14 @@ let cursorPos = 0;
 
 let currentLine = null;
 
-// ===== PROMPT =====
+// === PROMPT ===
 function getPrompt() {
-  return "tina@dev:~$";
+  const path = currentPath.join("/");
+  const displayPath = path === "home" ? "~" : "~/" + path.replace("home/", "");
+  return `tina@dev:${displayPath}$`;
 }
 
-// ===== CREATE INPUT LINE =====
+// === CREATE INPUT LINE ===
 function createInputLine() {
   currentInput = "";
   cursorPos = 0;
@@ -43,9 +66,12 @@ function createInputLine() {
   renderInput();
 }
 
-// ===== RENDER =====
+// === RENDER ===
 function renderInput() {
   if (!currentLine) return;
+
+  // Ensure only ONE cursor exists
+  document.querySelectorAll(".cursor").forEach(c => c.remove());
 
   const before = currentInput.slice(0, cursorPos);
   const after = currentInput.slice(cursorPos);
@@ -62,22 +88,48 @@ function escapeHtml(str) {
   return str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-// ===== INPUT HANDLING =====
+// === PRINT COMMAND ===
+function printCommand(cmd) {
+  const line = document.createElement("div");
+
+  const prompt = document.createElement("span");
+  prompt.className = "prompt";
+  prompt.textContent = getPrompt() + " ";
+
+  const text = document.createElement("span");
+  text.textContent = cmd;
+
+  line.appendChild(prompt);
+  line.appendChild(text);
+
+  terminal.appendChild(line);
+}
+
+// === INPUT HANDLING ===
 hiddenInput.addEventListener("keydown", (e) => {
 
   // ENTER
   if (e.key === "Enter") {
     e.preventDefault();
 
-    print(getPrompt() + " " + currentInput);
+    const input = currentInput;
 
-    history.push(currentInput);
+    // save to history (only if not empty)
+    if (input.trim() !== "") {
+      history.push(input);
+    }
     historyIndex = history.length;
 
-    runCommand(currentInput);
+    // print command ONCE
+    printCommand(input);
 
+    // run command logic
+    runCommand(input);
+
+    // reset input
     currentLine = null;
     createInputLine();
+
     return;
   }
 
@@ -154,20 +206,9 @@ hiddenInput.addEventListener("keydown", (e) => {
     renderInput();
   }
 
-  // TEXT INPUT
-  if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
-    e.preventDefault();
-
-    currentInput =
-      currentInput.slice(0, cursorPos) +
-      e.key +
-      currentInput.slice(cursorPos);
-
-    cursorPos++;
-    renderInput();
-  }
 });
 
+// Handle actual typing (mobile-safe)
 hiddenInput.addEventListener("input", () => {
   const val = hiddenInput.value;
 
@@ -182,36 +223,134 @@ hiddenInput.addEventListener("input", () => {
   renderInput();
 });
 
-// ===== COMMANDS =====
+// === COMMANDS ===
 function runCommand(cmd) {
   if (cmd === "help") {
-    print("help  clear  echo");
+    print("Available commands:");
+    print("────────────────────────");
+
+    const commands = [
+      ["help [cmd]", "Show this help menu"],
+      ["clear", "Clear the terminal"],
+      ["echo [text]", "Print text"],
+      ["ls", "List files and directories"],
+      ["cd [dir]", "Change directory"],
+      ["cat [file]", "View file contents"],
+      ["pwd", "Show current directory"],
+      ["whoami", "Display current user"],
+      ["neofetch", "Show system info"]
+    ];
+
+    commands.forEach(([cmd, desc]) => {
+      print(cmd.padEnd(10) + " --- " + desc);
+    });
+  }
+  else if (cmd.startsWith("help ")) {
+    const topic = cmd.trim().split(/\s+/)[1];
+
+    const helpMap = {
+      help: "help [command] - Show help info",
+      clear: "clear - Clears the terminal",
+      echo: "echo [text] - Prints text",
+      ls: "ls - Lists files in current directory",
+      cd: "cd [dir] - Change directory",
+      cat: "cat [file] - Show file contents",
+      pwd: "pwd - Show current path",
+      whoami: "whoami - Show current user",
+      neofetch: "neofetch - Show system info"
+    };
+
+    if (helpMap[topic]) {
+      print(helpMap[topic]);
+    } else {
+      print("No help available for that command");
+    }
+  }
+  else if (cmd === "ls") {
+    const dir = getCurrentDir();
+
+    const output = Object.keys(dir).map(name => {
+      return typeof dir[name] === "object"
+        ? name + "/"   // folder indicator
+        : name;
+    });
+
+    print(output.join("  "));
+  }
+  else if (cmd.startsWith("cd ")) {
+    const target = cmd.slice(3).trim();
+
+    if (target === "..") {
+      if (currentPath.length > 1) currentPath.pop();
+    } 
+    else if (target === "~" || target === "/") {
+      currentPath = ["home"];
+    }
+    else {
+      const dir = getCurrentDir();
+      if (dir[target] && typeof dir[target] === "object") {
+        currentPath.push(target);
+      } else {
+        print("No such directory");
+      }
+    }
+  }
+  else if (cmd.startsWith("cat ")) {
+    const file = cmd.slice(4).trim();
+    const dir = getCurrentDir();
+
+    if (typeof dir[file] === "string") {
+      print(dir[file]);
+    } else {
+      print("File not found");
+    }
+  }
+  else if (cmd === "pwd") {
+    print("/" + currentPath.join("/"));
   }
   else if (cmd === "clear") {
     terminal.innerHTML = "";
     createInputLine();
   }
+  else if (cmd === "echo") {
+    print("");
+  }
   else if (cmd.startsWith("echo ")) {
     print(cmd.slice(5));
+  }
+  else if (cmd === "whoami") {
+    print("tina");
+  }
+  else if (cmd === "neofetch") {
+    print("tina@dev");
+    print("-----------");
+    print("OS: Portfolio OS");
+    print("Shell: custom.js");
+    print("Location: PH");
+    print("Skills: HTML, CSS, JS");
   }
   else if (cmd.trim() !== "") {
     print("command not found");
   }
 }
 
-// ===== PRINT =====
+// === PRINT ===
 function print(text) {
   const div = document.createElement("div");
   div.textContent = text;
   terminal.appendChild(div);
+  scroll();
 }
 
-// ===== SCROLL =====
+// === SCROLL ===
 function scroll() {
   terminal.scrollTop = terminal.scrollHeight;
 }
 
-// ===== INIT =====
-print("Welcome to Tina's Terminal");
-print('Type "help"');
+// Ensure input is focused initially
+hiddenInput.focus();
+
+// === INIT ===
+print("Welcome to Tina's Terminal!");
+print('Type "help" for commands');
 createInputLine();
