@@ -1,7 +1,7 @@
 const terminal = document.getElementById("terminal");
 
 terminal.setAttribute("tabindex", "0");
-terminal.focus();
+// terminal.focus();
 
 // ===== STATE =====
 let history = [];
@@ -14,7 +14,7 @@ let currentLine = null;
 
 // ===== PROMPT =====
 function getPrompt() {
-  return "user@portfolio:~$";
+  return "tina@dev:~$";
 }
 
 // ===== CREATE INPUT LINE =====
@@ -195,6 +195,10 @@ function scroll() {
 }
 
 terminal.addEventListener("mousedown", () => {
+  terminal.focus();
+});
+
+document.addEventListener("click", () => {
   terminal.focus();
 });
 
