@@ -1,5 +1,8 @@
 const terminal = document.getElementById("terminal");
 
+terminal.setAttribute("tabindex", "0");
+terminal.focus();
+
 // ===== STATE =====
 let history = [];
 let historyIndex = -1;
@@ -57,10 +60,7 @@ function escapeHtml(str) {
 }
 
 // ===== INPUT HANDLING =====
-document.addEventListener("keydown", (e) => {
-
-  // Ensure terminal is focused (clicked)
-  if (!isFocused) return;
+terminal.addEventListener("keydown", (e) => {
 
   // ENTER
   if (e.key === "Enter") {
@@ -165,13 +165,6 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// ===== FOCUS HANDLING =====
-let isFocused = false;
-
-terminal.addEventListener("click", () => {
-  isFocused = true;
-});
-
 // ===== COMMANDS =====
 function runCommand(cmd) {
   if (cmd === "help") {
@@ -179,6 +172,7 @@ function runCommand(cmd) {
   }
   else if (cmd === "clear") {
     terminal.innerHTML = "";
+    createInputLine();
   }
   else if (cmd.startsWith("echo ")) {
     print(cmd.slice(5));
@@ -199,6 +193,10 @@ function print(text) {
 function scroll() {
   terminal.scrollTop = terminal.scrollHeight;
 }
+
+terminal.addEventListener("mousedown", () => {
+  terminal.focus();
+});
 
 // ===== INIT =====
 print("Welcome to Portfolio Terminal");
