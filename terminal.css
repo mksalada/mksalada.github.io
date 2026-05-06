@@ -1,22 +1,21 @@
 #terminal {
-  font-family: monospace;
   color: #00ffcc;
+  padding: 15px;
+  height: 400px;
+  overflow-y: auto;
+  border: 1px solid #222;
+  cursor: text;
 }
 
 .prompt {
   color: #00aaff;
 }
 
-.cmd {
-  outline: none;
-  display: inline-block;
-  min-width: 10px;
-}
-
 .cursor {
   display: inline-block;
   width: 8px;
   background: #00ffcc;
+  margin-left: 1px;
   animation: blink 1s infinite;
 }
 
