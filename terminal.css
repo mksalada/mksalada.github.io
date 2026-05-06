@@ -14,9 +14,11 @@
 .cursor {
   display: inline-block;
   width: 8px;
+  height: 1em;
   background: #00ffcc;
   margin-left: 1px;
   animation: blink 1s infinite;
+  vertical-align: bottom;
 }
 
 @keyframes blink {
