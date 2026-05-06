@@ -1,7 +1,10 @@
 const terminal = document.getElementById("terminal");
 
-terminal.setAttribute("tabindex", "0");
-// terminal.focus();
+const hiddenInput = document.getElementById("hiddenInput");
+
+terminal.addEventListener("click", () => {
+  hiddenInput.focus();
+});
 
 // ===== STATE =====
 let history = [];
@@ -60,7 +63,7 @@ function escapeHtml(str) {
 }
 
 // ===== INPUT HANDLING =====
-terminal.addEventListener("keydown", (e) => {
+hiddenInput.addEventListener("keydown", (e) => {
 
   // ENTER
   if (e.key === "Enter") {
@@ -165,6 +168,20 @@ terminal.addEventListener("keydown", (e) => {
   }
 });
 
+hiddenInput.addEventListener("input", () => {
+  const val = hiddenInput.value;
+
+  currentInput =
+    currentInput.slice(0, cursorPos) +
+    val +
+    currentInput.slice(cursorPos);
+
+  cursorPos += val.length;
+  hiddenInput.value = "";
+
+  renderInput();
+});
+
 // ===== COMMANDS =====
 function runCommand(cmd) {
   if (cmd === "help") {
@@ -194,15 +211,7 @@ function scroll() {
   terminal.scrollTop = terminal.scrollHeight;
 }
 
-terminal.addEventListener("mousedown", () => {
-  terminal.focus();
-});
-
-document.addEventListener("click", () => {
-  terminal.focus();
-});
-
 // ===== INIT =====
-print("Welcome to Portfolio Terminal");
+print("Welcome to Tina's Terminal");
 print('Type "help"');
 createInputLine();
