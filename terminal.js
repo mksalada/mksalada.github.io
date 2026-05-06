@@ -7,14 +7,14 @@ let historyIndex = -1;
 let currentInput = "";
 let cursorPos = 0;
 
+let currentLine = null;
+
 // ===== PROMPT =====
 function getPrompt() {
   return "user@portfolio:~$";
 }
 
-// ===== CREATE LINE =====
-let currentLine;
-
+// ===== CREATE INPUT LINE =====
 function createInputLine() {
   currentInput = "";
   cursorPos = 0;
@@ -30,36 +30,37 @@ function createInputLine() {
 
   line.appendChild(prompt);
   line.appendChild(cmd);
-
   terminal.appendChild(line);
+
   currentLine = cmd;
 
   renderInput();
 }
 
-// ===== RENDER INPUT WITH CURSOR =====
+// ===== RENDER =====
 function renderInput() {
+  if (!currentLine) return;
+
   const before = currentInput.slice(0, cursorPos);
   const after = currentInput.slice(cursorPos);
 
   currentLine.innerHTML =
-    escape(before) +
-    `<span class="cursor">█</span>` +
-    escape(after);
+    escapeHtml(before) +
+    '<span class="cursor"></span>' +
+    escapeHtml(after);
 
   scroll();
 }
 
-// Prevent HTML injection
-function escape(str) {
+function escapeHtml(str) {
   return str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-// ===== KEY HANDLER =====
+// ===== INPUT HANDLING =====
 document.addEventListener("keydown", (e) => {
 
-  // Ignore if no active line
-  if (!currentLine) return;
+  // Ensure terminal is focused (clicked)
+  if (!isFocused) return;
 
   // ENTER
   if (e.key === "Enter") {
@@ -72,7 +73,7 @@ document.addEventListener("keydown", (e) => {
 
     runCommand(currentInput);
 
-    currentLine.parentElement.remove(); // remove editable line
+    currentLine = null;
     createInputLine();
     return;
   }
@@ -126,7 +127,7 @@ document.addEventListener("keydown", (e) => {
     renderInput();
   }
 
-  // HISTORY ↑ ↓
+  // HISTORY ↑
   if (e.key === "ArrowUp") {
     e.preventDefault();
     if (historyIndex > 0) {
@@ -137,6 +138,7 @@ document.addEventListener("keydown", (e) => {
     }
   }
 
+  // HISTORY ↓
   if (e.key === "ArrowDown") {
     e.preventDefault();
     if (historyIndex < history.length - 1) {
@@ -163,7 +165,14 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// ===== COMMANDS (simple demo) =====
+// ===== FOCUS HANDLING =====
+let isFocused = false;
+
+terminal.addEventListener("click", () => {
+  isFocused = true;
+});
+
+// ===== COMMANDS =====
 function runCommand(cmd) {
   if (cmd === "help") {
     print("help  clear  echo");
@@ -191,6 +200,7 @@ function scroll() {
   terminal.scrollTop = terminal.scrollHeight;
 }
 
-// Boot
-print("Advanced Terminal Ready");
+// ===== INIT =====
+print("Welcome to Portfolio Terminal");
+print('Type "help"');
 createInputLine();
