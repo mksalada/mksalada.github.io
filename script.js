@@ -1,18 +1,3 @@
-const disabledKeys = ["c", "C", "x", "X", "u", "U", "s", "S", "i", "I"];
-
-const showAlert = (e) => {
-  e.preventDefault();
-  return alert("This feature is restricted!");
-}
-
-document.addEventListener("contextmenu", showAlert);
-
-document.addEventListener("keydown", e => {
-  if ((e.ctrlKey && disabledKeys.includes(e.key)) || e.key === "F12") {
-    showAlert(e);
-  }
-});
-
 const terminal1 = "tina",
       terminal2 = "dev",
       showTerminal1 = `${terminal1}`,
